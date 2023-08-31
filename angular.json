@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "Project_3_Frontend": {
+    "Weather-Wise-Client": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/project-3-frontend",
+            "outputPath": "dist/weather-wise-client",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -53,13 +53,7 @@
                   "maximumError": "4mb"
                 }
               ],
-              "outputHashing": "all",
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
-                }
-              ]
+              "outputHashing": "all"
             },
             "development": {
               "buildOptimizer": false,
@@ -77,10 +71,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "Project_3_Frontend:build:production"
+              "browserTarget": "Weather-Wise-Client:build:production"
             },
             "development": {
-              "browserTarget": "Project_3_Frontend:build:development"
+              "browserTarget": "Weather-Wise-Client:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -88,7 +82,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "Project_3_Frontend:build"
+            "browserTarget": "Weather-Wise-Client:build"
           }
         },
         "test": {

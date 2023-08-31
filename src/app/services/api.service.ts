@@ -5,8 +5,8 @@ import { catchError, retry, map } from 'rxjs/operators';
 import { Package } from '../models/package.model';
 import { Condition, Summary } from '../models/summary.model';
 import { Coords, LocationChangeResponse, SearchCriteria } from '../models/weather.model';
-import { locationEnv } from 'src/environments/environments';
-import { environment } from 'src/environments/environment.prod';
+// import { locationEnv } from 'src/environments/environments';
+import { environment } from 'src/environments/environment';
 
 // interface Coords {
 //   lat: number;
@@ -17,7 +17,8 @@ import { environment } from 'src/environments/environment.prod';
   providedIn: 'root'
 })
 export class ApiService {
-  baseUrl = 'http://localhost:8000/core/packages/';
+  // baseUrl = 'http://localhost:8000/core/packages/';
+  baseUrl = environment.API_BASE + '/core/packages/';
 
   constructor(private http: HttpClient) { }
 
@@ -31,7 +32,7 @@ export class ApiService {
 })
 export class ApiSummary {
   // baseUrl = 'http://localhost:8000/weather/summary/';
-  baseUrl = environment.apiBase + '/weather/summary/';
+  baseUrl = environment.API_BASE + '/weather/summary/';
 
   constructor(private http: HttpClient) {
     let coords: Coords = {
@@ -44,7 +45,7 @@ export class ApiSummary {
 
   getSummary(): Observable<Summary[]> {
     // let initUrl = 'http://localhost:8000/weather/initialize?';
-    let initUrl = environment.apiBase + '/weather/initialize?';
+    let initUrl = environment.API_BASE + '/weather/initialize?';
     // let cords = {lat: 29.6330969, lon: -82.3570501}
     // let coords = {lat: 0, lon: 0};
 
@@ -89,7 +90,7 @@ export class ApiSummary {
 })
 export class ApiSearch {
   // baseUrl = 'http://localhost:8000/weather/search/';
-  baseUrl = environment.apiBase + '/weather/search/';
+  baseUrl = environment.API_BASE + '/weather/search/';
   headers = new HttpHeaders().set('Content-Type', 'application/json');
 
   constructor(private http: HttpClient) { }
@@ -101,7 +102,7 @@ export class ApiSearch {
       temperature: data.temperature,
       precipitation: data.precipitation,
       humidity: data.humidity,
-      location: locationEnv.postal_code
+      location: environment.POSTAL_CODE
     }
 
     let json = JSON.stringify(body);
@@ -127,7 +128,7 @@ export class ApiSearch {
   providedIn: 'root'
 })
 export class ChangeLocation {
-  baseUrl = environment.apiBase + '/weather/change-location/?';
+  baseUrl = environment.API_BASE + '/weather/change-location/?';
   headers = new HttpHeaders().set('Content-Type', 'application/json');
 
   constructor(private http: HttpClient) { }

@@ -1,5 +1,5 @@
 {
-  "name": "project-3-frontend",
+  "name": "weather-wise-client",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",

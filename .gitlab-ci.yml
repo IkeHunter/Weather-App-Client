@@ -1,0 +1,47 @@
+image: docker:19.03.5
+services:
+  - docker:19.03.5-dind
+
+stages:
+  - Build
+  - Push
+
+before_script:
+  - apk add python3
+  - pip3 install awscli==1.18.8
+  - docker load --input data/image.tar
+  - $(aws ecr get-login --no-include-email --region us-east-1)
+
+Build:
+  stage: Build
+  before_script: []
+  script:
+    - echo Building...
+    - mkdir data/
+    - docker build --compress -t weather-app .
+    - docker save --output data/image.tar weather-app
+  artifacts:
+    name: image
+    paths:
+      - data/
+
+Push Staging:
+  stage: Push
+  script:
+    - echo Pushing to Staging Environment...
+    - docker tag weather-app $ECR_REPO:staging
+    - docker push $ECR_REPO:staging
+  rules:
+    - if: "$CI_COMMIT_BRANCH == 'main'"
+
+Push Production:
+  stage: Push
+  script:
+    - echo Pushing to Production Environment...
+    - docker tag weather-app $ECR_REPO:latest
+    - docker push $ECR_REPO:latest
+  rules:
+    - if: "$CI_COMMIT_BRANCH == 'production'"
+
+
+

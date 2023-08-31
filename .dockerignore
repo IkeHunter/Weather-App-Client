@@ -1,0 +1,5 @@
+.firebaserc
+.angular
+.editorconfig
+node_modules/
+package-lock.json
