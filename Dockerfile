@@ -14,13 +14,13 @@ RUN apk update && \
     npm install http-server -g && \
     ng build
 
-WORKDIR /app/dist/weather-wise-client
+# WORKDIR /app/dist/weather-wise-client
 
 # EXPOSE 80
 
-CMD ["http-server", "-p", "4200"]
+# CMD ["http-server", "-p", "4200"]
 
-# FROM nginx:1.25.2-alpine
-# COPY --from=node /app/dist/weather-wise-client/ /usr/share/nginx/html
+FROM --platform=linux/amd64 nginx:1.25.2-alpine
+COPY --from=node /app/dist/weather-wise-client/ /usr/share/nginx/html
 
 
