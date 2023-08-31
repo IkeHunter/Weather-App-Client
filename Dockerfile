@@ -23,4 +23,6 @@ RUN apk update && \
 FROM --platform=linux/amd64 nginx:1.25.2-alpine
 COPY --from=node /app/dist/weather-wise-client/ /usr/share/nginx/html
 
+EXPOSE 4200
+
 
