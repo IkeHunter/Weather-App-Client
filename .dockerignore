@@ -1,5 +1,14 @@
-.firebaserc
-.angular
-.editorconfig
-node_modules/
-package-lock.json
+# .firebaserc
+# .angular
+# .editorconfig
+# node_modules/
+# package-lock.json
+# Dockerfile
+# .git
+*
+!package.json
+!angular.json
+!tsconfig.json
+!tsconfig.app.json
+!src/
+
