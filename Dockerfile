@@ -1,4 +1,7 @@
-FROM --platform=linux/amd64 node:16-alpine AS node
+# STAGE 1: Setup
+############################################
+# FROM --platform=linux/amd64 node:16-alpine AS setup
+FROM node:16-alpine AS setup
 LABEL maintainer="web@ikehunter.dev"
 
 COPY ./angular.json /app/angular.json
@@ -9,18 +12,21 @@ WORKDIR /app
 RUN apk update && \
     apk add --update --no-cache python3 make g++ && \
     export PYTHON=/usr/bin/python3 && \
-    npm install && \
-    npm install -g @angular/cli@latest && \
-    npm install http-server -g && \
-    ng build
+    npm install
+    # npm install -g @angular/cli@latest && \
+    # npm install http-server -g
 
-# WORKDIR /app/dist/weather-wise-client
+# STAGE 2: Build
+############################################
+FROM setup AS build
 
-# EXPOSE 80
+RUN npm run ng build -- --output-path=dist/
 
-# CMD ["http-server", "-p", "4200"]
+# STAGE 3: Final
+############################################
+FROM setup AS final
+COPY --from=build /app/dist/ /app/dist/
 
-FROM --platform=linux/amd64 nginx:1.25.2-alpine
-COPY --from=node /app/dist/weather-wise-client/ /usr/share/nginx/html
+CMD ["tail", "-f", "/dev/null"]
 
 

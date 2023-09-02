@@ -24,6 +24,8 @@ Build:
     name: image
     paths:
       - data/
+  rules:
+    - if: '$CI_COMMIT_BRANCH =~ /^(main|production)$/'
 
 Push Staging:
   stage: Push
@@ -40,6 +42,8 @@ Push Production:
     - echo Pushing to Production Environment...
     - docker tag weather-app $ECR_REPO:latest
     - docker push $ECR_REPO:latest
+    - docker tag $ECR_REPO:latest $ECR_REPO:staging
+    - docker push $ECR_REPO:staging
   rules:
     - if: "$CI_COMMIT_BRANCH == 'production'"
 
