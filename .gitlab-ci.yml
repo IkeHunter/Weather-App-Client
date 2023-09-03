@@ -5,6 +5,7 @@ services:
 stages:
   - Build
   - Push
+  - Deploy
 
 before_script:
   - apk add python3
@@ -59,6 +60,24 @@ Push Production:
     - docker push $ECR_REPO:production
   rules:
     - if: "$CI_COMMIT_BRANCH == 'production'"
+
+Deploy Staging:
+  stage: Deploy
+  script:
+    - echo Queueing new ECS service...
+    - aws ecs update-service --cluster wwa-staging-cluster --service wwa-staging-server --force-new-deployment
+  rules:
+    - if: "$CI_COMMIT_BRANCH == 'main'"
+
+Deploy Production:
+  stage: Deploy
+  script:
+    - echo Queueing new ECS service...
+    - aws ecs update-service --cluster wwa-production-cluster --service wwa-production-server --force-new-deployment
+  rules:
+    - if: "$CI_COMMIT_BRANCH == 'production'"
+      when: manual
+
 
 
 

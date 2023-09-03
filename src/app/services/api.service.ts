@@ -68,6 +68,8 @@ export class ApiSummary {
     console.log("Api base: ", this.baseUrl)
 
     let url = initUrl + 'lat=' + coords.lat + '&long=' + coords.lon;
+
+    console.log("new deployment...")
     // return this.http.get<JSON>(url).pipe((data:any): any => {
     //   data.subscribe((data: any): Observable<Summary[]> => {
     //     return this.http.get<Summary[]>(this.baseUrl);
