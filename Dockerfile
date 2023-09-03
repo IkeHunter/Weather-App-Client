@@ -6,7 +6,7 @@ LABEL maintainer="web@ikehunter.dev"
 
 COPY ./angular.json /app/angular.json
 COPY ./package.json /app/package.json
-COPY . /app
+
 WORKDIR /app
 
 RUN apk update && \
@@ -20,12 +20,21 @@ RUN apk update && \
 ############################################
 FROM setup AS build
 
-RUN npm run ng build -- --output-path=dist/
+COPY . /app
+# ARG API_BASE="http://localhost:3000"
+# ARG API_BASE="https://0.0.0.0:8000"
+ARG CONFIG=production
+# RUN export API_BASE=$API_BASE && \
+#     npm run ng run Weather-Wise-Client:collect-vars
+
+RUN npm run ng build -- --output-path=dist/ --configuration=${CONFIG}
 
 # STAGE 3: Final
 ############################################
 FROM setup AS final
 COPY --from=build /app/dist/ /app/dist/
+
+VOLUME /app/dist
 
 CMD ["tail", "-f", "/dev/null"]
 

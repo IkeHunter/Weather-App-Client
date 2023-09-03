@@ -2,7 +2,6 @@ import { Component, OnChanges, OnInit, Output } from '@angular/core';
 import { Condition, Summary } from 'src/app/models/summary.model';
 import { Coords } from 'src/app/models/weather.model';
 import { ApiSummary } from 'src/app/services/api.service';
-import { locationEnv } from 'src/environments/environments';
 
 @Component({
   selector: 'app-dashboard',
