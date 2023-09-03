@@ -18,7 +18,7 @@ Build Staging:
   script:
     - echo Building...
     - mkdir data/
-    - docker build --compress -t weather-app --build-arg="CONFIG=staging".
+    - docker build --compress -t weather-app --build-arg="CONFIG=staging" .
     - docker save --output data/image.tar weather-app
   artifacts:
     name: image
@@ -33,7 +33,7 @@ Build Production:
   script:
     - echo Building...
     - mkdir data/
-    - docker build --compress -t weather-app .
+    - docker build --compress -t weather-app --build-arg="CONFIG=production" .
     - docker save --output data/image.tar weather-app
   artifacts:
     name: image
