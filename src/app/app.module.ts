@@ -24,7 +24,7 @@ import { HourPipe } from './pipes/time.pipe';
 import { DayPipe } from './pipes/time.pipe';
 import { DayMonthYear } from './pipes/time.pipe';
 import { DayMonth } from './pipes/time.pipe';
-import { ConditionSymbolPipe } from './pipes/conditions.pipe';
+import { ConditionSymbolPipe, SanitizeValuePipe } from './pipes/conditions.pipe';
 import { ConditionValuePipe } from './pipes/conditions.pipe';
 import { ConditionMapPipe } from './pipes/conditions.pipe';
 import { ConditionRangePipe } from './pipes/conditions.pipe';
@@ -69,7 +69,8 @@ import { getAnalytics } from "firebase/analytics";
         TimePipe,
         ConditionsPipe,
         DynamicWidgetComponent,
-        WidgetsPipe
+        WidgetsPipe,
+        SanitizeValuePipe
     ],
     providers: [],
     bootstrap: [AppComponent],

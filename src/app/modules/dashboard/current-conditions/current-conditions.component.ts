@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Summary } from 'src/app/models/summary.model';
-import { ConditionMapPipe } from 'src/app/pipes/conditions.pipe';
+import { ConditionMapPipe, SanitizeValuePipe } from 'src/app/pipes/conditions.pipe';
 import { ConditionValuePipe } from 'src/app/pipes/conditions.pipe';
 import { ApiSummary } from 'src/app/services/api.service';
 
@@ -14,6 +14,7 @@ export class CurrentConditionsComponent implements OnInit {
   // summary: Summary;
   condition = new ConditionValuePipe().transform;
   getCondition = new ConditionMapPipe().transform;
+  // sanitizeValue = new SanitizeValuePipe().transform;
 
   conditions = new Map<String, String>();
   // conditions2 = new Map<String, String>();

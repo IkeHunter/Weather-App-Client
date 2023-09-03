@@ -2,7 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { Condition } from '../models/summary.model';
 
 @Pipe({
-  name: 'conditions'
+  name: 'conditions',
 })
 export class ConditionsPipe implements PipeTransform {
   // Unused
@@ -12,7 +12,23 @@ export class ConditionsPipe implements PipeTransform {
 }
 
 @Pipe({
-  name: 'conditionValue'
+  name: 'sanitizeValue',
+})
+export class SanitizeValuePipe implements PipeTransform {
+  /**
+   * Takes a value and makes sure it's uniform.
+   * @param value number, value to be sanitized
+   * @param decimals number, number of decimal places to round to
+   * @returns string, sanitized value
+   */
+  transform(value: number, decimals: number = 0): string {
+    let newValue = value.toFixed(decimals);
+    return newValue.toString();
+  }
+}
+
+@Pipe({
+  name: 'conditionValue',
 })
 export class ConditionValuePipe implements PipeTransform {
   /**
@@ -24,11 +40,10 @@ export class ConditionValuePipe implements PipeTransform {
   transform(value: number, symbol: string = ''): string {
     return (value || 0).toString() + symbol;
   }
-
 }
 
 @Pipe({
-  name: 'conditionSymbol'
+  name: 'conditionSymbol',
 })
 export class ConditionSymbolPipe implements PipeTransform {
   /**
@@ -37,21 +52,20 @@ export class ConditionSymbolPipe implements PipeTransform {
    * @returns string, condition symbol. Ex: °, %, mph
    */
   transform(value: string): string {
-    if(value === "temp") {
-      return "°";
-    } else if(value === "pop" || value === "humidity") {
-      return "%";
-    } else if(value === "wind") {
-      return "mph";
-    }else {
-      return "";
+    if (value === 'temp') {
+      return '°';
+    } else if (value === 'pop' || value === 'humidity') {
+      return '%';
+    } else if (value === 'wind') {
+      return 'mph';
+    } else {
+      return '';
     }
   }
-
 }
 
 @Pipe({
-  name: 'conditionRange'
+  name: 'conditionRange',
 })
 export class ConditionRangePipe implements PipeTransform {
   /**
@@ -60,37 +74,36 @@ export class ConditionRangePipe implements PipeTransform {
    * @param range string, time range
    * @returns string, range + condition. Ex: Hourly Temperature Forecast
    */
-  transform(condition: string, range: string): string{
+  transform(condition: string, range: string): string {
     let time: string;
     let type: string;
 
-    if(range == "hour") {
-      time = "Hourly";
-    } else if(range == "day") {
-      time = "Daily";
+    if (range == 'hour') {
+      time = 'Hourly';
+    } else if (range == 'day') {
+      time = 'Daily';
     } else {
-      time = "No Data";
+      time = 'No Data';
     }
 
-    if(condition == "temp") {
-      type = "Temperature";
-    } else if(condition == "pop") {
-      type = "Precipitation";
-    } else if(condition == "humidity") {
-      type = "Humidity";
-    } else if(condition == "wind") {
-      type = "Wind";
+    if (condition == 'temp') {
+      type = 'Temperature';
+    } else if (condition == 'pop') {
+      type = 'Precipitation';
+    } else if (condition == 'humidity') {
+      type = 'Humidity';
+    } else if (condition == 'wind') {
+      type = 'Wind';
     } else {
-      type = "No Data";
+      type = 'No Data';
     }
 
-    return time + " " + type + " Forecast";
+    return time + ' ' + type + ' Forecast';
   }
-
 }
 
 @Pipe({
-  name: 'conditionMap'
+  name: 'conditionMap',
 })
 export class ConditionMapPipe implements PipeTransform {
   /**
@@ -102,48 +115,53 @@ export class ConditionMapPipe implements PipeTransform {
   transform(originalCondition: Condition): Map<String, String> {
     originalCondition = JSON.parse(JSON.stringify(originalCondition));
     var conditions = new Map<String, String>();
-    console.log(originalCondition)
-    let average_temp = Math.round((originalCondition.average_temp - 273.15) * 9/5 + 32);
-    let feels_like = Math.round((originalCondition.feels_like - 273.15) * 9/5 + 32);
+    console.log(originalCondition);
+    let average_temp = Math.round(
+      ((originalCondition.average_temp - 273.15) * 9) / 5 + 32
+    );
+    let feels_like = Math.round(
+      ((originalCondition.feels_like - 273.15) * 9) / 5 + 32
+    );
 
     conditions.set('Average Temp', (average_temp || 0).toString() + 'º');
     conditions.set('Feels Like', (feels_like || 0).toString() + 'º');
     conditions.set('Pressure', (originalCondition.pressure || 0).toString());
-    conditions.set('Humidity', (originalCondition.humidity || 0).toString() + '%');
+    conditions.set(
+      'Humidity',
+      (originalCondition.humidity || 0).toString() + '%'
+    );
     // conditions.set('Chance of Rain', (originalCondition.pop || 0).toString() + '%');
-    conditions.set('Wind Speed', (originalCondition.wind_speed || 0).toString() + 'mph');
-    conditions.set('Rain Level', (originalCondition.rain_levels || 0).toString() + '"');
+    conditions.set(
+      'Wind Speed',
+      (originalCondition.wind_speed || 0).toString() + 'mph'
+    );
+    conditions.set(
+      'Rain Level',
+      (originalCondition.rain_levels || 0).toString() + '"'
+    );
 
     return conditions;
   }
-
 }
 
 @Pipe({
-  name: 'kToF'
+  name: 'kToF',
 })
 export class KelvinToFahrenheit implements PipeTransform {
-
   transform(value: number): number {
-    return Math.round((value - 273.15) * 9/5 + 32);
+    return Math.round(((value - 273.15) * 9) / 5 + 32);
   }
-
 }
 
 @Pipe({
-  name: 'weatherIcon'
+  name: 'weatherIcon',
 })
 export class WeatherIconPipe implements PipeTransform {
-
   transform(value: string): string {
-    if(value.includes("n")) {
+    if (value.includes('n')) {
       let re = /n/gi;
-      return value.replace(re, "d");
+      return value.replace(re, 'd');
     }
     return value;
   }
-
 }
-
-
-
