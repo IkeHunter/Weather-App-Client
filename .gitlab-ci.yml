@@ -12,7 +12,22 @@ before_script:
   - docker load --input data/image.tar
   - $(aws ecr get-login --no-include-email --region us-east-1)
 
-Build:
+Build Staging:
+  stage: Build
+  before_script: []
+  script:
+    - echo Building...
+    - mkdir data/
+    - docker build --compress -t weather-app --build-arg="CONFIG=staging".
+    - docker save --output data/image.tar weather-app
+  artifacts:
+    name: image
+    paths:
+      - data/
+  rules:
+    - if: "$CI_COMMIT_BRANCH == 'main'"
+
+Build Production:
   stage: Build
   before_script: []
   script:
@@ -25,7 +40,7 @@ Build:
     paths:
       - data/
   rules:
-    - if: '$CI_COMMIT_BRANCH =~ /^(main|production)$/'
+    - if: "$CI_COMMIT_BRANCH == 'production'"
 
 Push Staging:
   stage: Push
@@ -40,10 +55,8 @@ Push Production:
   stage: Push
   script:
     - echo Pushing to Production Environment...
-    - docker tag weather-app $ECR_REPO:latest
-    - docker push $ECR_REPO:latest
-    - docker tag $ECR_REPO:latest $ECR_REPO:staging
-    - docker push $ECR_REPO:staging
+    - docker tag weather-app $ECR_REPO:production
+    - docker push $ECR_REPO:production
   rules:
     - if: "$CI_COMMIT_BRANCH == 'production'"
 
