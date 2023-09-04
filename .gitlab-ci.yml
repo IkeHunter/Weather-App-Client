@@ -65,7 +65,7 @@ Deploy Staging:
   stage: Deploy
   script:
     - echo Queueing new ECS service...
-    - aws ecs update-service --cluster wwa-staging-cluster --service wwa-staging-server --force-new-deployment
+    - aws ecs update-service --cluster wwa-staging-cluster --service wwa-staging-server --force-new-deployment --region us-east-1
   rules:
     - if: "$CI_COMMIT_BRANCH == 'main'"
 
@@ -73,7 +73,7 @@ Deploy Production:
   stage: Deploy
   script:
     - echo Queueing new ECS service...
-    - aws ecs update-service --cluster wwa-production-cluster --service wwa-production-server --force-new-deployment
+    - aws ecs update-service --cluster wwa-production-cluster --service wwa-production-server --force-new-deployment --region us-east-1
   rules:
     - if: "$CI_COMMIT_BRANCH == 'production'"
       when: manual
